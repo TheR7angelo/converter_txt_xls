@@ -55,6 +55,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         self.but_file_path.clicked.connect(self.select_dir)
 
         self.but_xls.clicked.connect(lambda: self.extension(self.but_xls.objectName()))
+        self.but_xlsx.clicked.connect(lambda: self.extension(self.but_xlsx.objectName()))
 
     def setup_programme(self):
         self.file_path.setPlaceholderText('Glisser déposer un dossier  ou cliquer sur le bouton "Dossier"')
@@ -83,7 +84,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                 SideGrip(self, QtCore.Qt.Edge.BottomEdge),
             ]
 
-            self.cornerGrips = [QtWidgets.QSizeGrip(self) for i in range(4)]
+            self.cornerGrips = [QtWidgets.QSizeGrip(self) for _ in range(4)]
 
         def buttonFont(self):
             font = QFont()
@@ -127,9 +128,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
 
         widget = getattr(self, widget)
         for but in list_widget:
-            if but == widget:
-                but.setChecked(True)
-            else:
+            if but != widget:
                 but.setChecked(False)
 
     def start_prog(self):
@@ -172,7 +171,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                 else:
                     button.setChecked(False)
 
-        interface = 'page_' + interface
+        interface = f'page_{interface}'
         try:
             page = getattr(self, interface)
             self.stackedWidget.setCurrentWidget(page)

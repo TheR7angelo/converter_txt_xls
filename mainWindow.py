@@ -167,15 +167,6 @@ class Ui_MainWindow(object):
 
         self.gridLayout_2.addWidget(self.but_xls, 2, 1, 1, 2)
 
-        self.progressBar = QProgressBar(self.page)
-        self.progressBar.setObjectName(u"progressBar")
-        self.progressBar.setValue(0)
-        self.progressBar.setAlignment(Qt.AlignCenter)
-        self.progressBar.setOrientation(Qt.Horizontal)
-        self.progressBar.setTextDirection(QProgressBar.TopToBottom)
-
-        self.gridLayout_2.addWidget(self.progressBar, 4, 1, 1, 5)
-
         self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.gridLayout_2.addItem(self.verticalSpacer_2, 5, 3, 1, 1)
@@ -215,6 +206,15 @@ class Ui_MainWindow(object):
         self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.gridLayout_2.addItem(self.horizontalSpacer_4, 3, 4, 1, 1)
+
+        self.progressBar = QProgressBar(self.page)
+        self.progressBar.setObjectName(u"progressBar")
+        self.progressBar.setValue(0)
+        self.progressBar.setAlignment(Qt.AlignCenter)
+        self.progressBar.setOrientation(Qt.Horizontal)
+        self.progressBar.setTextDirection(QProgressBar.TopToBottom)
+
+        self.gridLayout_2.addWidget(self.progressBar, 4, 0, 1, 7)
 
 
         self.verticalLayout.addLayout(self.gridLayout_2)

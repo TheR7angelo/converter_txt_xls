@@ -314,22 +314,6 @@ QPushButton:hover{
                   </property>
                  </widget>
                 </item>
-                <item row="4" column="1" colspan="5">
-                 <widget class="QProgressBar" name="progressBar">
-                  <property name="value">
-                   <number>0</number>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="textDirection">
-                   <enum>QProgressBar::TopToBottom</enum>
-                  </property>
-                 </widget>
-                </item>
                 <item row="5" column="3">
                  <spacer name="verticalSpacer_2">
                   <property name="orientation">
@@ -425,6 +409,22 @@ QPushButton:hover{
                    </size>
                   </property>
                  </spacer>
+                </item>
+                <item row="4" column="0" colspan="7">
+                 <widget class="QProgressBar" name="progressBar">
+                  <property name="value">
+                   <number>0</number>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="textDirection">
+                   <enum>QProgressBar::TopToBottom</enum>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </item>
