@@ -1,13 +1,16 @@
 import datetime
+import pathlib
 import sys
 import os
 
-from PySide6 import QtWidgets, QtGui, QtCore
-from PySide6.QtCore import QSize, QPropertyAnimation
+from PySide6 import QtWidgets, QtCore
+from PySide6.QtCore import QSize, QPropertyAnimation, QThreadPool
 from PySide6.QtGui import Qt, QFont, QScreen, QIcon
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QFileDialog
 
 from Module.Widget.SideGrip import SideGrip
+
+from worker import Worker
 
 from mainWindow import Ui_MainWindow
 
@@ -57,10 +60,12 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         self.but_xls.clicked.connect(lambda: self.extension(self.but_xls.objectName()))
         self.but_xlsx.clicked.connect(lambda: self.extension(self.but_xlsx.objectName()))
 
-    def setup_programme(self):
-        self.file_path.setPlaceholderText('Glisser déposer un dossier  ou cliquer sur le bouton "Dossier"')
-
         self.but_run.clicked.connect(self.start_prog)
+
+    def setup_programme(self):
+        self.threadpool = QThreadPool()
+
+        self.file_path.setPlaceholderText('Glisser déposer un dossier  ou cliquer sur le bouton "Dossier"')
 
     def setup(self):
 
@@ -131,13 +136,44 @@ class mainWindow(QMainWindow, Ui_MainWindow):
             if but != widget:
                 but.setChecked(False)
 
+        if widget.isChecked():
+            print(widget.text())
+
     def start_prog(self):
-        if self.file_path.text() != '':
-            path = self.file_path.text()
-            print(path)
-        else:
-            # message(self, "Le chemin du dossier n'a pas étais remplit", "Erreur", "Critique")
+
+        path = self.file_path.text()
+
+        extension = None
+        list_but_ext = [self.but_xls, self.but_xlsx]
+        for but in list_but_ext:
+            if but.isChecked():
+                extension = but.text()
+
+        if path == '' and extension is None:
+            print("Le chemin du dossier n'a pas étais remplit et l'extrension n'a pas étais choisit")
+        elif path == '':
             print("Le chemin du dossier n'a pas étais remplit")
+        elif extension is None:
+            print("L'extension de fichier n'a pas étais choisit")
+        else:
+            look_ext = '*\\*.txt'
+
+            files = list(pathlib.Path(path).glob(look_ext))
+            self.progressBar.setValue(0)
+            self.progressBar.setMaximum(len(files)-1)
+
+            self.worker_convert = Worker(files=files, ext=extension)
+            self.worker_convert.signals.progress.connect(self.progression)
+            self.worker_convert.signals.start.connect(self.wroker_work)
+
+            self.threadpool.start(self.worker_convert)
+
+    def wroker_work(self, activated):
+        activated = not activated
+        self.but_run.setEnabled(activated)
+
+    def progression(self, progress):
+        self.progressBar.setValue(progress)
 
     def select_dir(self):
         if self.file_path.text() != '':
